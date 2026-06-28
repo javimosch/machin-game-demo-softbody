@@ -393,9 +393,8 @@ type FlyCam struct {
 }
 
 func fc_new() (c) {
-    px := 0.0  py := 7.0  pz := 16.0
-    l := sqrt(px*px + py*py + pz*pz) + 0.0000001
-    c = FlyCam{v3(px, py, pz), atan2(0.0 - px, 0.0 - pz), asin(py / l)}
+    // position so cubes (y ≈ 10–12) and ground (y = 0) are both visible
+    c = FlyCam{v3(0.0, 12.0, 22.0), 3.14159, 0.32}
 }
 
 func fc_forward(c) (f) {
@@ -472,7 +471,6 @@ func main() {
     // cube A (body 0) and cube B (body 1)
     w = build_soft_cube(w, -3.5, 10.5, 0.0, 1.2, 0.4, 1.0, 0)
     w = build_soft_cube(w,  3.5, 12.5, 0.0, 1.2, 0.4, 1.0, 1)
-
     cam := fc_new()
     sim := 0.0
     fix := 0.016666
@@ -497,6 +495,7 @@ func main() {
         // ── compute current COMs (used for rest-target debug lines) ──
         com_a, _ := body_com(w, 0)
         com_b, _ := body_com(w, 1)
+
 
         cam = fc_update(cam, GetFrameTime())
 
